@@ -4,27 +4,18 @@ let continuar = true
 let dados = []// Dados do usuário
 
 
-// Função para cadastro
+// Função para cadastro dos novos produtos
 function cadastrar() {
 	let perguntar1 = prompt("Insira o Nome do produto: ").toUpperCase()
     let perguntar2 = prompt("Insira o tipo do produto: ").toUpperCase()
     let perguntar3 = prompt("Insira a marca do produto:").toUpperCase()
-    let disponibilidade = prompt("Temos o produto em estoque? Sim ou não").toUpperCase()
     let perguntar4 = Number(prompt("Insira o valor do produto: "))
     
-    if (disponibilidade === "SIM") {
-        disponibilidade = true
-    }
-    else {
-        disponibilidade = false
-    }
-
     const produtos = {
-        Nome: perguntar1,
+        nome: perguntar1,
         tipo: perguntar2,
         marca: perguntar3,
         valor: perguntar4,
-        estoque: disponibilidade,
     }
     
     dados.push(produtos)
@@ -32,29 +23,47 @@ function cadastrar() {
     console.log(dados)
 }
 
-// Função para listar
+// Função para listar os produtos cadastrados
 function listar() {
     let lista =`
               LISTA DE PRODUTOS 
---------------------------------------------------
-| NOME | TIPO | MARCA | VALOR | DISPONIBILIDADE |
---------------------------------------------------`
+-------------------------------------------------------
+|    NOME    |    TIPO    |    MARCA    |    VALOR    |
+-------------------------------------------------------\n`
     for(let objeto of dados){
-        let listaObjeto = ` |   ${objeto.nome}  | ${objeto.tipo} | ${objeto.marca} | ${objeto.valor} | ${objeto.disponibilidade} |\n `             
-        lista = listaObjeto
+        let listaObjeto = `|    ${objeto.nome}  |    ${objeto.tipo}    |    ${objeto.marca}    |    R$${objeto.valor},00    |\n `             
+        lista = lista + listaObjeto
     }
     console.log(lista)
+	
 }
 
-// Função para buscar
+// Função para buscar um produto especifico
 function buscar() {
-	console.log("Função de busca")
+	let produtoEscolhido = prompt("Insira o nome do produto:").toUpperCase()
+	let lista =`
+              BUSCA DO PRODUTO
+-------------------------------------------------------
+|    NOME    |    TIPO    |    MARCA    |    VALOR    |
+-------------------------------------------------------\n`
+    for(let objeto of dados){
+        let buscaObjeto = `|    ${objeto.nome}    |    ${objeto.tipo}    |    ${objeto.marca}    |    R$${objeto.valor},00    |\n `             
+		for(let propriedade in objeto){
+			if (objeto[propriedade] === produtoEscolhido) {
+				lista += buscaObjeto
+				break 
+			}
+		}
+    
+	}
+    	
+	console.log(lista)
 }
 
-// Função para sair
+// Função para sair do programa/ fecha-lo
 function sair() {
 	continuar = false
-	console.log("Tchau! Para reiniciar, atualize a aba do navegador.")
+	console.log("Adeus! Para reiniciar, atualize a aba do navegador ou aperte F5.")
 }
 
 
@@ -66,9 +75,8 @@ while (continuar) {
 		perguntar += "Escolha uma opção:\n"
 		perguntar += "1. Cadastrar Produtos\n"
 		perguntar += "2. lista dos Produtos\n"
-		perguntar += "3. disponibilidade\n"
-		perguntar += "4. Marca do produto\n"
-        perguntar += "5. Sair"
+		perguntar += "3. Buscar produtos\n"
+        perguntar += "4. Sair"
         
 
 	// Guardar resposta
