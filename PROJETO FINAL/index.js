@@ -6,6 +6,8 @@ let dados = []// Dados do usuário
 
 // Função para cadastro dos novos produtos
 function cadastrar() {
+	listar()
+	
 	let perguntar1 = prompt("Insira o Nome do produto: ").toUpperCase()
     let perguntar2 = prompt("Insira o tipo do produto: ").toUpperCase()
     let perguntar3 = prompt("Insira a marca do produto:").toUpperCase()
@@ -27,11 +29,11 @@ function cadastrar() {
 function listar() {
     let lista =`
               LISTA DE PRODUTOS 
--------------------------------------------------------
-|    NOME    |    TIPO    |    MARCA    |    VALOR    |
--------------------------------------------------------\n`
+----------------------------------------------------------------------
+|    INDICE    |    NOME    |    TIPO    |    MARCA    |    VALOR    |
+----------------------------------------------------------------------\n`
     for(let objeto of dados){
-        let listaObjeto = `|    ${objeto.nome}  |    ${objeto.tipo}    |    ${objeto.marca}    |    R$${objeto.valor},00    |\n `             
+        let listaObjeto =`|    ${dados.indexOf(objeto)}    |    ${objeto.nome}  |    ${objeto.tipo}    |    ${objeto.marca}    |    R$${objeto.valor},00|\n`             
         lista = lista + listaObjeto
     }
     console.log(lista)
@@ -42,12 +44,12 @@ function listar() {
 function buscar() {
 	let produtoEscolhido = prompt("Insira o nome do produto:").toUpperCase()
 	let lista =`
-              BUSCA DO PRODUTO
--------------------------------------------------------
-|    NOME    |    TIPO    |    MARCA    |    VALOR    |
--------------------------------------------------------\n`
+	           BUSCA DO PRODUTO
+----------------------------------------------------------------------
+|    INDICE    |    NOME    |    TIPO    |    MARCA    |    VALOR    |
+----------------------------------------------------------------------\n`
     for(let objeto of dados){
-        let buscaObjeto = `|    ${objeto.nome}    |    ${objeto.tipo}    |    ${objeto.marca}    |    R$${objeto.valor},00    |\n `             
+        let buscaObjeto =`|    ${dados.indexOf(objeto)}    |    ${objeto.nome}    |    ${objeto.tipo}    |    ${objeto.marca}    |    R$${objeto.valor},00|\n`             
 		for(let propriedade in objeto){
 			if (objeto[propriedade] === produtoEscolhido) {
 				lista += buscaObjeto
@@ -63,21 +65,34 @@ function buscar() {
 // Função para sair do programa/ fecha-lo
 function sair() {
 	continuar = false
-	console.log("Adeus! Para reiniciar, atualize a aba do navegador ou aperte F5.")
+	console.log("Até logo! Para reiniciar, atualize a aba do navegador ou aperte F5.")
 }
 
+//Função desconto
+function desconto() {
+	listar()
+	
+	let i = Number(prompt("Indice do produto:"))
+	let descontos = Number(prompt("Insira o valor do desconto"))
+	descontos = (100 - descontos) / 100
+	let valorDescontos = dados[i].valor * descontos
+
+	console.log(valorDescontos)
+}
+
+//
 
 // Loop para perguntar ao usuário
 while (continuar) {
 	// Formatar pergunta
-	let perguntar  = "MAXIMUNS ELETRONICS\n"
+	let perguntar  = "MAXIMUMS ELETRONICS\n"
 		perguntar += "-------------------------\n"
 		perguntar += "Escolha uma opção:\n"
 		perguntar += "1. Cadastrar Produtos\n"
 		perguntar += "2. lista dos Produtos\n"
 		perguntar += "3. Buscar produtos\n"
-        perguntar += "4. Sair"
-        
+        perguntar += "4. Desconto\n"
+        perguntar += "5. Sair"
 
 	// Guardar resposta
 	let resposta = Number(prompt(perguntar))
@@ -94,7 +109,10 @@ while (continuar) {
 			buscar()
 			break
 		case 4:
+			desconto()
+			break
+		case 5:
 			sair()
 			break
-	}
+}
 }
